@@ -1,0 +1,154 @@
+# Generated for the reposplit micro-repo layout.
+# Steps are emitted only for tooling this repo actually contains.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  npm:
+    name: npm (with sibling repos)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: ws/redux
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Clone sibling repos
+        run: |
+          git clone --depth 1 https://github.com/johndoe6345789/components.git ws/components
+          git clone --depth 1 https://github.com/johndoe6345789/hooks.git ws/hooks
+          git clone --depth 1 https://github.com/johndoe6345789/icons.git ws/icons
+          git clone --depth 1 https://github.com/johndoe6345789/interfaces.git ws/interfaces
+          git clone --depth 1 https://github.com/johndoe6345789/schemas.git ws/schemas
+          git clone --depth 1 https://github.com/johndoe6345789/scss.git ws/scss
+          git clone --depth 1 https://github.com/johndoe6345789/translations.git ws/translations
+          git clone --depth 1 https://github.com/johndoe6345789/types.git ws/types
+      # Single-line write: a heredoc inside a YAML block scalar ends up with an
+      # indented terminator, which never closes.
+      - name: Generate workspace root
+        run: |
+          echo '{"name": "ci-workspace", "private": true, "workspaces": ["redux/adapters", "redux/api-clients", "redux/core-hooks", "redux/core", "redux/dbal-sso", "redux/email", "redux/hooks-async", "redux/hooks-auth", "redux/hooks-canvas", "redux/hooks-data", "redux/hooks-forms", "redux/hooks-utils", "redux/hooks", "redux/middleware", "redux/persist", "redux/services", "redux/slices", "redux/timing-utils", "components", "components/m3", "hooks", "interfaces", "redux/*", "scss", "translations", "types"], "overrides": {"react": "^19.2.4", "react-dom": "^19.2.4", "react-redux": "^9.2.0", "@types/react": "^19.2.14", "@types/react-dom": "^19.2.3"}}' > ws/package.json
+      - name: Install dependencies
+        working-directory: ws
+        run: npm install
+      - name: build (redux/adapters)
+        working-directory: ws/redux/adapters
+        run: npm run build
+      - name: build (redux/api-clients)
+        working-directory: ws/redux/api-clients
+        run: npm run build
+      - name: typecheck (redux/core-hooks)
+        working-directory: ws/redux/core-hooks
+        run: npm run typecheck
+      - name: build (redux/core-hooks)
+        working-directory: ws/redux/core-hooks
+        run: npm run build
+      - name: lint (redux/core)
+        working-directory: ws/redux/core
+        run: npm run lint
+      - name: typecheck (redux/core)
+        working-directory: ws/redux/core
+        run: npm run typecheck
+      - name: build (redux/core)
+        working-directory: ws/redux/core
+        run: npm run build
+      - name: typecheck (redux/dbal-sso)
+        working-directory: ws/redux/dbal-sso
+        run: npm run typecheck
+      - name: build (redux/dbal-sso)
+        working-directory: ws/redux/dbal-sso
+        run: npm run build
+      - name: lint (redux/email)
+        working-directory: ws/redux/email
+        run: npm run lint
+      - name: typecheck (redux/email)
+        working-directory: ws/redux/email
+        run: npm run typecheck
+      - name: build (redux/email)
+        working-directory: ws/redux/email
+        run: npm run build
+      - name: typecheck (redux/hooks-async)
+        working-directory: ws/redux/hooks-async
+        run: npm run typecheck
+      - name: build (redux/hooks-async)
+        working-directory: ws/redux/hooks-async
+        run: npm run build
+      - name: typecheck (redux/hooks-auth)
+        working-directory: ws/redux/hooks-auth
+        run: npm run typecheck
+      - name: build (redux/hooks-auth)
+        working-directory: ws/redux/hooks-auth
+        run: npm run build
+      - name: typecheck (redux/hooks-canvas)
+        working-directory: ws/redux/hooks-canvas
+        run: npm run typecheck
+      - name: build (redux/hooks-canvas)
+        working-directory: ws/redux/hooks-canvas
+        run: npm run build
+      - name: typecheck (redux/hooks-data)
+        working-directory: ws/redux/hooks-data
+        run: npm run typecheck
+      - name: build (redux/hooks-data)
+        working-directory: ws/redux/hooks-data
+        run: npm run build
+      - name: lint (redux/hooks-forms)
+        working-directory: ws/redux/hooks-forms
+        run: npm run lint
+      - name: typecheck (redux/hooks-forms)
+        working-directory: ws/redux/hooks-forms
+        run: npm run typecheck
+      - name: build (redux/hooks-forms)
+        working-directory: ws/redux/hooks-forms
+        run: npm run build
+      - name: lint (redux/hooks-utils)
+        working-directory: ws/redux/hooks-utils
+        run: npm run lint
+      - name: typecheck (redux/hooks-utils)
+        working-directory: ws/redux/hooks-utils
+        run: npm run typecheck
+      - name: build (redux/hooks-utils)
+        working-directory: ws/redux/hooks-utils
+        run: npm run build
+      - name: build (redux/hooks)
+        working-directory: ws/redux/hooks
+        run: npm run build
+      - name: typecheck (redux/middleware)
+        working-directory: ws/redux/middleware
+        run: npm run typecheck
+      - name: build (redux/middleware)
+        working-directory: ws/redux/middleware
+        run: npm run build
+      - name: build (redux/persist)
+        working-directory: ws/redux/persist
+        run: npm run build
+      - name: lint (redux/services)
+        working-directory: ws/redux/services
+        run: npm run lint
+      - name: typecheck (redux/services)
+        working-directory: ws/redux/services
+        run: npm run typecheck
+      - name: build (redux/services)
+        working-directory: ws/redux/services
+        run: npm run build
+      - name: build (redux/slices)
+        working-directory: ws/redux/slices
+        run: npm run build
+      - name: typecheck (redux/timing-utils)
+        working-directory: ws/redux/timing-utils
+        run: npm run typecheck
+      - name: build (redux/timing-utils)
+        working-directory: ws/redux/timing-utils
+        run: npm run build
