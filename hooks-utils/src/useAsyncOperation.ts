@@ -192,11 +192,13 @@ export function useAsyncOperation<T>(
           const result = await executeWithRetry(0)
           updateStatus('succeeded')
           return result
-        } catch (err) {
+        } catch {
+          // The error itself is already reported through onError inside
+          // executeWithRetry; this frame only records the terminal status.
           updateStatus('failed')
           return null
         }
-      } catch (err) {
+      } catch {
         updateStatus('failed')
         return null
       }
